@@ -6,4 +6,4 @@ See [PRINCIPLES.md](agent/PRINCIPLES.md) for the full description and principles
 
 ## Contents
 
-- `agent/` — process files, style guides, map guidance, and opt-in/migration scripts
+- `agent/` — process files, style guides, map guidance, and opt-in script

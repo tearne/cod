@@ -34,7 +34,7 @@ Mark unmapped nodes with `(TODO)`. Place the tree at the end of the root node, a
 
 Terse conceptual description. Lead with the mental picture.
 
-> [!DECISION] / [!ASSUMPTION] callouts for load-bearing choices.
+> [!IMPORTANT] callout for a load-bearing point the reader should not skim.
 
 **Detail**
 
@@ -65,7 +65,7 @@ Each node carries markdown links encoding its position in the tree:
 All optional. Always in this order when present:
 
 - **Prose** — terse conceptual description, leads with the mental picture. This is what the user reads.
-- **Callouts** — `[!DECISION]`, `[!ASSUMPTION]`, `[!CONSTRAINT]`, `[!TODO]` for points with special status.
+- **Callouts** — `[!IMPORTANT]` for load-bearing points where skimming would lose the reader: design trade-offs, non-obvious assumptions, constraints that shape the whole node. The prose carries the semantic load (words like "assume", "decided", "never"); the callout just marks "don't skim this". Not for every notable fact.
 - **Detail** — implementation-level precision (parameters, thresholds, algorithms). The user can stop reading before this. Marked with bold `**Detail**`.
 - **See also** — cross-cutting references that aren't parent/child. Marked with bold `**See also**`. Each entry says why the relationship matters.
 

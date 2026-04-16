@@ -9,7 +9,7 @@ Always do these steps at the start of every session:
    - **Intent + Approach** — planning, needs Plan
    - **Intent + Approach + Plan** — ready to build, or awaiting plan approval
    - **Has Feedback but no Conclusion** — needs replanning
-   - **Has Feedback and Conclusion** — build complete, review map impact
+   - **Has Feedback and Conclusion** — build complete, review documentation impact
    - **`active.md` exists** — a build is in progress or was interrupted
 
 2. Announce your mode (plan or build) based on what you found.
@@ -28,7 +28,7 @@ Exempt from the active change requirement:
 
 - Reading any project file
 - Creating or editing files inside `changes/`
-- Editing `map.md` — see MAP-GUIDANCE.md for rules on when and how.
+- Editing `map.md` — permitted without an active change, but only with user engagement (never silently, one node at a time). See MAP-GUIDANCE.md for the full rules.
 
 ## Map
 
@@ -38,7 +38,7 @@ If the project has a `map.md`, it is the primary frame of reference for understa
 
 - `changes/open/` — open changes and the `active.md` lock file
 - `changes/archive/` — completed changes, named `YYYY-MM-DD-<name>.md`
-- `changes/agents/ADDITIONAL/` — optional guides, loaded on reference. See its README for the list.
+- `ADDITIONAL/` — optional guides, loaded on reference. See its README for the list.
 
 @PROCESS.md
 @STYLE.md

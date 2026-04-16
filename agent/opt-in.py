@@ -41,7 +41,14 @@ def main():
     project_root = git_root()
     console.print(f"Setting up agent process in [bold]{project_root}[/bold]\n")
 
-    agents_dir = project_root / "changes/agents"
+    agents_dir = project_root / "agent"
+
+    if AGENT_DIR.resolve() == agents_dir.resolve():
+        console.print(
+            "[bold red]Error:[/bold red] refusing to run — source and destination resolve to the same path.\n"
+            "This script is its own source of truth; running it here would install the agent files on top of themselves."
+        )
+        sys.exit(1)
 
     # Copy agent files
     for name in ["README.md", "PROCESS.md", "STYLE.md", "MAP-GUIDANCE.md"]:
@@ -58,7 +65,7 @@ def main():
     # Project root CLAUDE.md pointing to agent README
     create_file(
         project_root / "CLAUDE.md",
-        "@changes/agents/README.md\n",
+        "@agent/README.md\n",
     )
 
     # Exclude global CLAUDE.md so the project uses its own
@@ -73,6 +80,8 @@ def main():
 
     # Update .gitignore
     update_gitignore(project_root / ".gitignore")
+
+    warn_if_legacy_layout(project_root)
 
     console.print("\n[bold green]Done.[/bold green]")
 
@@ -135,7 +144,7 @@ def create_dir(path: Path) -> None:
 
 
 def update_gitignore(path: Path) -> None:
-    entries = ["CLAUDE.md", "changes/agents/"]
+    entries = ["CLAUDE.md", "agent/"]
     content = path.read_text() if path.exists() else ""
     lines = content.splitlines()
     to_add = [e for e in entries if e not in lines]
@@ -147,6 +156,19 @@ def update_gitignore(path: Path) -> None:
     with path.open("w") as f:
         f.write(content + separator + block + "\n")
     report("updated", path, f"added: {', '.join(to_add)}")
+
+
+def warn_if_legacy_layout(project_root: Path) -> None:
+    legacy_dir = project_root / "changes/agents"
+    if not legacy_dir.exists():
+        return
+    console.print(
+        "\n[bold yellow]Legacy layout detected:[/bold yellow] [dim]changes/agents/[/dim]\n"
+        "The agent files now live at [bold]agent/[/bold]. To finish migrating:\n"
+        "  - delete the old folder:  [dim]rm -rf changes/agents[/dim]\n"
+        "  - remove the stale line [dim]changes/agents/[/dim] from [dim].gitignore[/dim]\n"
+        "  - update your [dim]CLAUDE.md[/dim] reference from [dim]@changes/agents/README.md[/dim] to [dim]@agent/README.md[/dim]"
+    )
 
 
 def report(status: str, path: Path, note: str = "") -> None:
