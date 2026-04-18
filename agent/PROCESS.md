@@ -5,7 +5,7 @@ Two modes: **plan** and **build**. Each change moves through a fixed sequence wi
 
 ## Modes
 
-**Plan mode** — research, reason, produce a change document. Read any project file. Write only to `changes/`. Fine-grained back-and-forth with the user on structure and approach.
+**Plan mode** — research, reason, produce a change document. Read any project file. Write only to `changes/`. Negotiate structure and approach with the user through a drafted document and an Unresolved list of open items.
 
 **Build mode** — execute an approved plan. Write to project files. Follow the plan; don't redesign. If the plan turns out to be wrong, stop and move the change to feedback rather than improvising.
 
@@ -15,6 +15,8 @@ Start in plan mode. Transition to build requires explicit user approval of the c
 ## Plan mode
 
 A change document is a single markdown file in `changes/open/`. It grows through three stages, each gated by user approval.
+
+For each stage, the agent writes the draft into the change document and then asks for approval. The user reviews the rendered file (with the help of their editor's diff view), not a chat-rendered draft. Chat is used to disclose what needs attention — notably the Unresolved list described below — and to summarise what is ready for review.
 
 If a `map.md` exists, it is the primary frame of reference. Describe the change in terms of the map's concepts and boundaries — not source files, not code structure. Tasks that affect mapped concepts reference the map node, not the implementing file.
 
@@ -26,18 +28,13 @@ Why the change is needed. Domain language — what the user wants, not how the a
 
 How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps.
 
-Discuss one topic per message. In each message, show a **Pending** queue and the **Current** topic so the user sees how much is still unaddressed. The queue is a conversational device, not part of the change document — the Approach section records resolved outcomes.
+Once Intent is approved, the agent writes the full Approach into the change document, resolving everything it can on its own. Alongside the Approach, the agent writes an **Unresolved** section at the end of the document — a short bulleted list of the items the agent cannot settle alone, each pointing to the part of the Approach it affects.
 
-**Pending**
-1. topic B
-2. topic C
+After writing, the agent discloses the Unresolved list in chat so the user can answer immediately without opening the file. The user reviews the draft and answers the items (inline reply is fine). The agent folds the answers back into the Approach prose and removes resolved items from the list. When the list is empty, the Approach is ready for the user's explicit approval.
 
-**Current**
-What should we do about topic A?
+If the user disagrees with something the agent had already settled, they raise it like a new item. The agent folds the resolution in and adds new Unresolved items for any downstream choices now reopened.
 
-The agent drafts the initial topic list from reading the code and (if present) the map, and shows it before starting. Topics may be added, reordered, or dropped as discussion proceeds. Wait for the user's response before moving on. Ask the user to approve the Approach before continuing.
-
-The grain size matters: many small decisions with the user's full attention, rather than one overwhelming list. Fine-grained negotiation belongs in planning — not building.
+The Unresolved section is deleted once the Plan is written — its absence signals that the Approach is settled.
 
 ### Plan
 
@@ -52,7 +49,9 @@ On Plan approval, create `changes/open/active.md` containing the filename of the
 
 ### Executing
 
-Work through plan tasks in order. Tick each as it completes. Follow the plan; don't redesign mid-build.
+Work through plan tasks in order. Tick each in the change document as it completes. Follow the plan; don't redesign mid-build.
+
+Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem. A well-constructed plan should not need close watching.
 
 If the plan is wrong or incomplete and the path forward is unclear: stop, write a Feedback section, remove `active.md`, tell the user. The change returns to plan mode.
 

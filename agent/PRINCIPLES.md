@@ -82,10 +82,10 @@ If the map is the source of truth, multiple agents can render it independently. 
 Full cross-rendering is expensive and best reserved for high-stakes or low-confidence moments. The routine form is cheaper: the question "is this part of the map sufficiently well characterised that a fresh agent could build from it without guessing?" This can be asked at any time, by either user or agent, during map maintenance or planning. Another lightweight test is whether multiple agents would derive the same test conditions and edge cases from a node — divergence points to ambiguity in the map, not in the implementation. The literal cross-rendering mechanism is available when needed; the discipline of asking is the continuous quality signal.
 
 
-### Interaction grain size
+### Interaction grain size for map maintenance
 
-The agent should never advance the map's structure faster than the user can engage with it. One topic at a time, resolved before moving on. The agent manages a visible queue of pending topics; the user decides the structure.
+The agent should never advance the map's structure faster than the user can engage with it. Map changes are negotiated one node at a time: the agent discusses each structural decision with the user before moving on. The user decides the structure.
 
 Without this, map maintenance reproduces the original failure mode one level up: the user's role becomes approving map diffs instead of approving code diffs — a better level of abstraction, but still passive review. Fine-grained negotiation is what converts map maintenance from a review activity into the comprehension-building activity that the whole approach depends on.
 
-Fine-grained negotiation belongs in planning — not building. During implementation, the agent executes the approved plan without renegotiating structure at every step.
+This principle scopes to map maintenance. Approach-stage negotiation during change planning uses its own mechanic (see `PROCESS.md`); during build, the agent executes the approved plan without renegotiating structure at every step.

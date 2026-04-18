@@ -19,6 +19,9 @@ console = Console()
 
 AGENT_DIR = Path(__file__).parent
 
+LEGACY_CLAUDE_MD = "@changes/agents/README.md\n"
+NEW_CLAUDE_MD = "@agent/README.md\n"
+
 
 def git_root() -> Path:
     result = subprocess.run(
@@ -63,10 +66,8 @@ def main():
                 copy_asset(f, additional_dest / f.name)
 
     # Project root CLAUDE.md pointing to agent README
-    create_file(
-        project_root / "CLAUDE.md",
-        "@agent/README.md\n",
-    )
+    legacy_claude_md_outcome = rewrite_legacy_claude_md(project_root)
+    create_file(project_root / "CLAUDE.md", NEW_CLAUDE_MD)
 
     # Exclude global CLAUDE.md so the project uses its own
     create_settings(
@@ -81,7 +82,7 @@ def main():
     # Update .gitignore
     update_gitignore(project_root / ".gitignore")
 
-    warn_if_legacy_layout(project_root)
+    warn_if_legacy_layout(project_root, legacy_claude_md_outcome)
 
     console.print("\n[bold green]Done.[/bold green]")
 
@@ -158,16 +159,46 @@ def update_gitignore(path: Path) -> None:
     report("updated", path, f"added: {', '.join(to_add)}")
 
 
-def warn_if_legacy_layout(project_root: Path) -> None:
+def rewrite_legacy_claude_md(project_root: Path) -> str:
+    path = project_root / "CLAUDE.md"
+    if not path.exists() or path.read_text() != LEGACY_CLAUDE_MD:
+        return "inapplicable"
+    if has_uncommitted_changes(project_root, path):
+        report("conflict", path, "legacy pointer detected but file has uncommitted changes — left untouched")
+        return "refused_modified"
+    path.write_text(NEW_CLAUDE_MD)
+    report("updated", path, "rewrote legacy pointer to @agent/README.md")
+    return "rewrote"
+
+
+def has_uncommitted_changes(project_root: Path, path: Path) -> bool:
+    result = subprocess.run(
+        ["git", "status", "--porcelain", "--", str(path.relative_to(project_root))],
+        cwd=project_root, capture_output=True, text=True,
+    )
+    status = result.stdout
+    if not status:
+        return False
+    return status[:2] != "??"
+
+
+def warn_if_legacy_layout(project_root: Path, claude_md_outcome: str) -> None:
     legacy_dir = project_root / "changes/agents"
     if not legacy_dir.exists():
         return
+    steps = [
+        "  - delete the old folder:  [dim]rm -rf changes/agents[/dim]",
+        "  - remove the stale line [dim]changes/agents/[/dim] from [dim].gitignore[/dim]",
+    ]
+    if claude_md_outcome == "refused_modified":
+        steps.append(
+            "  - update your [dim]CLAUDE.md[/dim] reference from [dim]@changes/agents/README.md[/dim] to [dim]@agent/README.md[/dim] "
+            "(left untouched because it has uncommitted changes)"
+        )
     console.print(
         "\n[bold yellow]Legacy layout detected:[/bold yellow] [dim]changes/agents/[/dim]\n"
         "The agent files now live at [bold]agent/[/bold]. To finish migrating:\n"
-        "  - delete the old folder:  [dim]rm -rf changes/agents[/dim]\n"
-        "  - remove the stale line [dim]changes/agents/[/dim] from [dim].gitignore[/dim]\n"
-        "  - update your [dim]CLAUDE.md[/dim] reference from [dim]@changes/agents/README.md[/dim] to [dim]@agent/README.md[/dim]"
+        + "\n".join(steps)
     )
 
 
