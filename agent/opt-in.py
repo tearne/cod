@@ -78,6 +78,7 @@ def main():
     # Create changes folder structure
     create_dir(project_root / "changes/open")
     create_dir(project_root / "changes/archive")
+    create_file(project_root / "changes/process.md", "# Process observations\n")
 
     # Update .gitignore
     update_gitignore(project_root / ".gitignore")

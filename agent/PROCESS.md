@@ -84,3 +84,16 @@ When all tasks are done, write a Conclusion section. Ask the user to review. On 
 - Build mode: write to project files and `changes/`.
 
 **Git** — write operations (commit, push, branch) require explicit user instruction. Never commit or push on own initiative.
+
+
+## Process feedback
+
+At any point in a session the user may start a message with `process:` to capture an observation about the agent or the change process itself. These observations are raw material for later reflection — they feed back into the COD methodology when the user reviews them, not into the current task.
+
+On a `process:` message, the agent:
+
+- Appends a dated entry to `changes/process.md`. The entry is the observation plus whatever context (mode, active change, preceding topic, relevant file) would be lost otherwise. It need not be verbatim; the agent may tighten or rephrase to make the entry readable on its own later.
+- Confirms capture in a single line.
+- Returns to whatever task was under way without acting on the observation.
+
+`changes/process.md` is a single append-only file, tracked in git, shared between collaborators. It is not `Feedback` (which names a build-stage section inside a specific change document).
