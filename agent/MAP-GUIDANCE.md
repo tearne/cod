@@ -100,11 +100,22 @@ The format is agnostic about how nodes are distributed across files:
 
 ## When to edit the map
 
-The map is exempt from the active change requirement — it can be updated at any time. However:
+Two rules govern every map edit.
 
-- **Only with user engagement.** Never update the map silently or in bulk. Discuss each structural change with the user, and only update one node at a time.
-- **During a change:** read the map during the Approach stage. Include map update tasks in the Plan when the mapped area is affected. If an active change already includes map tasks, mention this to the user before making additional edits.
-- **Outside a change:** the user may want to restructure the map spontaneously. Support this — it is the core comprehension-building activity.
+**Sync rule** — *The map describes what exists, not what is proposed.* Don't edit the map ahead of the code. Edits that describe pending work defer until the code is built.
+
+**Engagement rule** — *Every map edit is negotiated.* One node at a time, with user engagement. Never silent, never bulk. When an edit touches two or more nodes, enumerate them in chat up front and tick through them as each is settled. Per-node approval prompts are phrased as comprehension checks — "does that fit your mental model?", "is that clear enough?" — not yes/no gates.
+
+The map is exempt from the active-change requirement: edits that describe existing reality may happen at any time.
+
+### Pre-staging edits in an Approach
+
+Map edits for a change are deferred until Build (Sync rule). Pre-negotiate them per-node in the Approach document, where Plan tasks can be written directly from the layout:
+
+- **Per-node edits.** One subsection per node being changed. For a content update, show the **full proposed node content**, not a diff — nodes are small, so the whole node supports unambiguous review. For a removal or move, state what happens to the node, where its children go, and how incoming links are handled. Each subsection becomes its own Plan task.
+- **Global renames or cross-cutting touches.** A separate subsection when a single change sweeps across many nodes uniformly (e.g. renaming a concept). These become cross-cutting Plan tasks rather than per-node ones.
+
+Build executes these pre-negotiated edits without reopening structure.
 
 
 ## Maintaining the map

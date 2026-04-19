@@ -6,4 +6,5 @@ See [PRINCIPLES.md](agent/PRINCIPLES.md) for the full description and principles
 
 ## Contents
 
-- `agent/` — process files, style guides, map guidance, and opt-in script
+- `agent/` — process files, style guides, and map guidance
+- `opt-in.py` — installer script for adopting the framework in another project

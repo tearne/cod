@@ -12,9 +12,11 @@ Always do these steps at the start of every session:
    - **Has Feedback and Conclusion** — build complete, review documentation impact
    - **`active.md` exists** — a build is in progress or was interrupted
 
-2. Announce your mode (plan or build) based on what you found.
+2. Inspect `changes/agent/` to identify the active framework version (the one this file's path belongs to) and any other versioned directories alongside it. If other versions exist, note them — the user may want a summary of what changed. Do not read `CHANGELOG.md` unprompted; surface it only when asked.
 
-3. Report the scan results and propose next steps to the user.
+3. Announce your mode (plan or build) based on what you found.
+
+4. Report the scan results, any additional version directories, and propose next steps to the user.
 
 ## Rules
 
@@ -28,7 +30,7 @@ Exempt from the active change requirement:
 
 - Reading any project file
 - Creating or editing files inside `changes/`
-- Editing `map.md` — permitted without an active change, but only with user engagement (never silently, one node at a time). See MAP-GUIDANCE.md for the full rules.
+- Editing `map.md` — edits describing existing reality are permitted without an active change; edits describing pending work defer to Build via an active change. Always negotiated with the user, one node at a time. See MAP-GUIDANCE.md for the full rules.
 
 ## Map
 

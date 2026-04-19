@@ -26,7 +26,7 @@ Why the change is needed. Domain language — what the user wants, not how the a
 
 ### Approach
 
-How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps.
+How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps. Map edits that describe the proposed change are deferred to Build and executed as Plan tasks; pre-stage them in the Approach per `MAP-GUIDANCE.md`. Map edits that bring the map in line with existing code (stale catch-ups) remain permitted at any time.
 
 Once Intent is approved, the agent writes the full Approach into the change document, resolving everything it can on its own. Alongside the Approach, the agent writes an **Unresolved** section at the end of the document — a short bulleted list of the items the agent cannot settle alone, each pointing to the part of the Approach it affects.
 
@@ -74,6 +74,12 @@ When all tasks are done, write a Conclusion section. Ask the user to review. On 
 
 **Conclusion** comments only on anything new — deviations, docs touched, or surprises not already captured in the change document. If nothing new, "Completed." suffices.
 
+### Changelog entry
+
+After the Conclusion is approved and before the change is archived, the agent asks whether the change warrants an entry in `agent/CHANGELOG.md`. Trivial edits (typo fixes, minor doc wording) may not. For anything substantive, the agent drafts a one-line entry, surfaces it in chat for approval or reword, then adds a new `## YYYY-MM-DD[.N]` section at the top of `agent/CHANGELOG.md` with the entry beneath.
+
+`.N` increments when today already has a section. The version name is the source of truth for the next `opt-in.py` install — the changelog heading becomes the target's directory name.
+
 
 ## Gates and permissions
 
@@ -86,14 +92,29 @@ When all tasks are done, write a Conclusion section. Ask the user to review. On 
 **Git** — write operations (commit, push, branch) require explicit user instruction. Never commit or push on own initiative.
 
 
-## Process feedback
+## Keywords
+
+### Process keyword
 
 At any point in a session the user may start a message with `process:` to capture an observation about the agent or the change process itself. These observations are raw material for later reflection — they feed back into the COD methodology when the user reviews them, not into the current task.
 
 On a `process:` message, the agent:
 
-- Appends a dated entry to `changes/process.md`. The entry is the observation plus whatever context (mode, active change, preceding topic, relevant file) would be lost otherwise. It need not be verbatim; the agent may tighten or rephrase to make the entry readable on its own later.
+- Appends a dated entry to `changes/process-feedback.md`, creating the file with a `# Process feedback` header if it doesn't yet exist. The entry is the observation plus whatever context (mode, active change, preceding topic, relevant file) would be lost otherwise. It need not be verbatim; the agent may tighten or rephrase to make the entry readable on its own later.
 - Confirms capture in a single line.
 - Returns to whatever task was under way without acting on the observation.
 
-`changes/process.md` is a single append-only file, tracked in git, shared between collaborators. It is not `Feedback` (which names a build-stage section inside a specific change document).
+`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators. Its name echoes the build-stage **Feedback** section inside change documents, but the mechanism is distinct: this file is user-submitted observations about the methodology; Feedback sections are agent-written signals that a plan turned out wrong.
+
+
+### Aside keyword
+
+At any point in a session the user may use `aside:` (most naturally at the start of a message; other natural forms are also recognised) to park a topic for later without breaking the current flow.
+
+On an aside, the agent:
+
+- Dispatches the topic. **New proposal** (a fresh `changes/open/<slug>.md` with the captured text as Intent) if the topic is independent of the current discussion or no active discussion exists. **In-proposal aside** (appended to an "Asides" subsection at the end of the current change document) if the topic is within the scope of an in-progress change. The agent decides based on scope; when genuinely unsure, asks.
+- Acknowledges placement in a single line ("Captured as new proposal: …" or "Added to asides in current change: …").
+- Returns to whatever task was under way.
+
+In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard). They are distinct from `Feedback` — Feedback is agent-written and signals that the plan turned out wrong; asides are user-parked thoughts that do not block execution.

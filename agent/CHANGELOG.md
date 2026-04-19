@@ -1,0 +1,39 @@
+# Changelog
+
+Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
+
+## 2026-04-19.1
+
+- `opt-in.py` moved from `agent/opt-in.py` to the repo root. The script's internal `AGENT_DIR` was adjusted so it still finds the framework files under `agent/`. No downstream-visible effect.
+
+## 2026-04-19
+
+- Renamed `changes/process.md` to `changes/process-feedback.md`; file header updated to match.
+- `opt-in.py` now reads the version name from the latest `## YYYY-MM-DD[.N]` heading in `agent/CHANGELOG.md` rather than computing from today's date. Every non-trivial completed change bumps the version by adding a new section at the top.
+- `PROCESS.md` **Completing** section: added a Changelog entry step prompting the user on each change.
+- `opt-in.py` no longer seeds a blank `changes/process-feedback.md` — the agent creates the file on first use of the `process:` keyword.
+
+Downstream migration: after `opt-in.py` runs, any existing `changes/process.md` is left in place. Migrate entries manually with `git mv` to `changes/process-feedback.md` and delete the old file.
+
+## 2026-04-18
+
+Initial versioned release.
+
+The framework introduces directory-based versioning under `changes/agent/<YYYY-MM-DD[.N]>/`. Previously, `opt-in.py` copied framework files to a single un-versioned `agent/` directory at the project root; now each install lands in a dated subdirectory and the project's `CLAUDE.md` is rewritten to point at it. Old versions are left in place so the user and agent retain direct access to prior installed state.
+
+### Framework contents at this version
+
+- **README.md** — startup behaviour, rules, permissions, map reference.
+- **PROCESS.md** — plan/build lifecycle, Intent → Approach → Plan → Build → Archive; `process:` and `aside:` keywords.
+- **STYLE.md** — coding and prose style principles.
+- **MAP-GUIDANCE.md** — tree-of-nodes map format, Sync + Engagement rules, per-node pre-staging of map edits in an Approach.
+- **ADDITIONAL/** — optional guides loaded on reference.
+
+### Manual migration (from the un-versioned `agent/` layout)
+
+After running `opt-in.py`:
+
+- The new framework files are at `changes/agent/<today>/`.
+- `CLAUDE.md` now points at `@changes/agent/<today>/README.md`.
+- `.gitignore` has been updated to exclude `CLAUDE.md` and `changes/agent/`.
+- The old `agent/` directory is left in place. Delete it manually (`rm -rf agent`) once you're satisfied the new layout works, and remove any stale `agent/` line from `.gitignore`.
