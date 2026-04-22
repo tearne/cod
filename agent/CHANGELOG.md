@@ -2,6 +2,18 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-04-22.2
+
+- `PROCESS.md` **Approach** list gains a bullet: when a decision is fully carried by a proposed map node update, don't restate it in prose.
+
+## 2026-04-22.1
+
+- `MAP-GUIDANCE.md`: the only-child rule relaxed into an "only-child preference". Singleton children can remain as nodes if they represent a distinct concept or their detail would bloat the parent; the "if a sibling were added, would this still be a node?" test helps decide. The "Maintaining the map" signal updated to match.
+
+## 2026-04-22
+
+- `PROCESS.md` **Approach** guidance tightened: Approach is now framed as a list of decisions and their reasons, not a narrative. Added a short "what it is / isn't" list to discourage recap, file-by-file rehearsal, and subsections that don't carry a decision.
+
 ## 2026-04-19.1
 
 - `opt-in.py` moved from `agent/opt-in.py` to the repo root. The script's internal `AGENT_DIR` was adjusted so it still finds the framework files under `agent/`. No downstream-visible effect.

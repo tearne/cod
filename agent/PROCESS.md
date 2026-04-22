@@ -28,7 +28,15 @@ Why the change is needed. Domain language — what the user wants, not how the a
 
 How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps. Map edits that describe the proposed change are deferred to Build and executed as Plan tasks; pre-stage them in the Approach per `MAP-GUIDANCE.md`. Map edits that bring the map in line with existing code (stale catch-ups) remain permitted at any time.
 
-Once Intent is approved, the agent writes the full Approach into the change document, resolving everything it can on its own. Alongside the Approach, the agent writes an **Unresolved** section at the end of the document — a short bulleted list of the items the agent cannot settle alone, each pointing to the part of the Approach it affects.
+Once Intent is approved, the agent writes the Approach into the change document. Treat it as a list of decisions and their reasons, not a narrative:
+
+- One subsection per decision; self-evident choices don't need a subsection.
+- State the decision, then the reason in a sentence or two. Stop.
+- Don't recap the Intent. Don't rehearse code structure or file-by-file steps — those belong in the Plan.
+- When a decision is fully carried by a proposed map node update, don't restate it in prose — the node is the decision. Prose is for decisions that aren't in a node, or for the "why" the node can't convey.
+- If a subsection can be deleted without losing a decision, delete it.
+
+Alongside the Approach, the agent writes an **Unresolved** section at the end of the document — a short bulleted list of the items the agent cannot settle alone, each pointing to the part of the Approach it affects.
 
 After writing, the agent discloses the Unresolved list in chat so the user can answer immediately without opening the file. The user reviews the draft and answers the items (inline reply is fine). The agent folds the answers back into the Approach prose and removes resolved items from the list. When the list is empty, the Approach is ready for the user's explicit approval.
 

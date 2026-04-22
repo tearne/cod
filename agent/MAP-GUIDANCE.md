@@ -75,9 +75,9 @@ All optional. Always in this order when present:
 Aim for under ~800 characters per node. The real test: if a node feels like it warrants sub-sections, it's too big — split into children. Flag nodes that exceed this to the user.
 
 
-## The only-child rule
+## The only-child preference
 
-If a node would have no siblings and no children, it's not a node — it's the bottom of its parent.
+Prefer folding a singleton child into its parent. Keep it as its own node when it is a distinct concept in the user's model, or when its detail would bloat the parent. A useful test: if a sibling were later added, would this still be a node? If yes, keep it now.
 
 
 ## Content principles
@@ -126,7 +126,7 @@ Signals that the map needs attention:
 - **Top-level boxes don't match the user's mental model** — restructure. The map follows the user's model, not the code's architecture.
 - **A node has grown verbose** — cut aggressively. Move precision to **Detail**.
 - **New concepts don't have a natural home** — the decomposition may need rethinking, not a misc section.
-- **An only-child exists** — fold it into its parent.
+- **An only-child exists that isn't a distinct concept** — fold it into its parent.
 
 Don't treat the map as append-only. Restructuring is not rework — it's what keeps the map useful.
 

@@ -47,6 +47,8 @@ No artifact substitutes for the activity of structural thinking itself. The proc
 
 Joyful activities using the map include integrating new concepts into the model, verifying coherence between parts, hunting edge cases, and engaging in dialogue about structure. These are creative, critical, and dialogic. None are "review the agent's diff." A process that delivers comprehension through passive review still fails — engagement collapses when the work becomes a maintenance burden rather than the part the user got into the field for.
 
+A corollary: **artifact economy.** Every word in a change document, Approach, or map node competes with the reader's attention. Bloat and duplication turn a dialogic activity into a wading exercise — the same engagement collapse described above, by another route. Concision and avoiding duplication are therefore not style preferences but disciplines that protect joy.
+
 
 ### Local sufficiency
 
