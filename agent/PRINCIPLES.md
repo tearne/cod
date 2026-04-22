@@ -30,7 +30,7 @@ A way of working in which both users and agents can shine on software projects, 
 
 1. **Comprehension must scale with complexity.** The user's structural grip on the system must not decay as the system grows.
 
-2. **Structural thinking must remain joyful.** The part of software development that strong practitioners value most — holding a system's shape in your head, deciding where the next change goes, seeing how pieces fit — is the same activity that builds comprehension. A process that turns the user into a passive reviewer destroys engagement even if it delivers correct software. Joy is a binding constraint, not a pleasant side-effect.
+2. **Structural thinking must remain enjoyable.** The part of software development that strong practitioners value most — holding a system's shape in your head, deciding where the next change goes, seeing how pieces fit — is the same activity that builds comprehension. A process that turns the user into a passive reviewer destroys engagement even if it delivers correct software. Enjoyment is a binding constraint, not a pleasant side-effect.
 
 3. **Conceptual maintainability is a first-class design constraint.** It has the same standing as correctness and performance. It is not the first thing sacrificed under deadline pressure.
 
@@ -43,11 +43,11 @@ A way of working in which both users and agents can shine on software projects, 
 No artifact substitutes for the activity of structural thinking itself. The process must give the user a deliberate activity that builds and maintains structural understanding at a pace that keeps up with agent-driven production. The map is that activity — maintaining it is the construction that builds the conceptual model.
 
 
-### Joy
+### Enjoyment
 
-Joyful activities using the map include integrating new concepts into the model, verifying coherence between parts, hunting edge cases, and engaging in dialogue about structure. These are creative, critical, and dialogic. None are "review the agent's diff." A process that delivers comprehension through passive review still fails — engagement collapses when the work becomes a maintenance burden rather than the part the user got into the field for.
+Enjoyable activities using the map include integrating new concepts into the model, verifying coherence between parts, hunting edge cases, and engaging in dialogue about structure. These are creative, critical, and dialogic. None are "review the agent's diff." A process that delivers comprehension through passive review still fails — engagement collapses when the work becomes a maintenance burden rather than the part the user got into the field for.
 
-A corollary: **artifact economy.** Every word in a change document, Approach, or map node competes with the reader's attention. Bloat and duplication turn a dialogic activity into a wading exercise — the same engagement collapse described above, by another route. Concision and avoiding duplication are therefore not style preferences but disciplines that protect joy.
+A corollary: **artifact economy.** Every word in a change document, Approach, or map node competes with the reader's attention. Bloat and duplication turn a dialogic activity into a wading exercise — the same engagement collapse described above, by another route. Concision and avoiding duplication are therefore not style preferences but disciplines that protect enjoyment.
 
 
 ### Local sufficiency

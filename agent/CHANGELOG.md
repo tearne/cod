@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 0.1.9
+
+- `PRINCIPLES.md`: **Joy** principle renamed to **Enjoyment** (Goal #2, principle section header and body, artifact-economy corollary). No change in substance — the rename softens the emotional register for better developer palatability.
+
 ## 0.1.8
 
 - `PROCESS.md`: trimmed five pieces of explanatory/disambiguation prose — user-review-rendered-file framing, "a well-constructed plan should not need close watching", the process-keyword-as-raw-material tail, and the two feedback-vs-aside disambiguation paragraphs.
