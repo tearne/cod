@@ -51,6 +51,8 @@ A concrete task list. Each task is a checklist item (add, update, remove, test).
 
 ## Build mode
 
+If the project uses versioning (see `ADDITIONAL/VERSIONING.md`), bump the patch version whenever a build is handed to the user for test — during iteration or at Completing — so they can visually confirm they're on the latest. Announce the new value.
+
 ### Entering build
 
 On Plan approval, create `changes/open/active.md` containing the filename of the change (e.g. `tighten-agent-instructions.md`, with no path prefix). This is the lock — only one change builds at a time. If `active.md` already exists, stop and tell the user. An agent resuming an interrupted build reads the change document itself to find the next unticked task.
@@ -78,15 +80,14 @@ The two gates:
 
 ### Completing
 
-When all tasks are done, write a Conclusion section. Ask the user to review. On approval, move the change file to `changes/archive/` (prefixed `YYYY-MM-DD-<name>.md`), remove `active.md`.
+When all tasks are done, write a Conclusion section. Ask the user to review and/or test. On approval, move the change file to `changes/archive/` (prefixed `YYYY-MM-DD-<name>.md`), remove `active.md`.
 
-**Conclusion** comments only on anything new — deviations, docs touched, or surprises not already captured in the change document. If nothing new, "Completed." suffices.
+**Conclusion** covers:
 
-### Changelog entry
+- Anything new — deviations, docs touched, or surprises not already captured in the change document. If nothing new, "Completed." suffices.
+- Whether the change warrants an entry in `agent/CHANGELOG.md`. Trivial edits (typo fixes, minor doc wording) may not; for anything substantive, draft a one-line entry and surface it in chat for approval or reword.
 
-After the Conclusion is approved and before the change is archived, the agent asks whether the change warrants an entry in `agent/CHANGELOG.md`. Trivial edits (typo fixes, minor doc wording) may not. For anything substantive, the agent drafts a one-line entry, surfaces it in chat for approval or reword, then adds a new `## YYYY-MM-DD[.N]` section at the top of `agent/CHANGELOG.md` with the entry beneath.
-
-`.N` increments when today already has a section. The version name is the source of truth for the next `opt-in.py` install — the changelog heading becomes the target's directory name.
+On approval of the changelog entry, add a new `## X.Y.Z` section at the top of `agent/CHANGELOG.md` with the entry beneath. See `ADDITIONAL/VERSIONING.md` for bump-level guidance. The version is the source of truth for the next `opt-in.py` install — the changelog heading becomes the target's directory name.
 
 
 ## Gates and permissions

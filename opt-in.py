@@ -24,7 +24,7 @@ FRAMEWORK_FILES = ["README.md", "PROCESS.md", "STYLE.md", "MAP-GUIDANCE.md"]
 
 POINTER_PATTERN = re.compile(r"^@(agent/README\.md|changes/agents?/.*README\.md)\s*$")
 
-VERSION_HEADING_PATTERN = re.compile(r"^##\s+(\d{4}-\d{2}-\d{2}(?:\.\d+)?)\s*$")
+VERSION_HEADING_PATTERN = re.compile(r"^##\s+(\d+\.\d+\.\d+)\s*$")
 
 
 def git_root() -> Path:
@@ -96,7 +96,7 @@ def read_latest_version_from_changelog() -> str:
         if match:
             return match.group(1)
     console.print(
-        "[bold red]Error:[/bold red] no `## YYYY-MM-DD[.N]` section found in CHANGELOG.md."
+        "[bold red]Error:[/bold red] no `## X.Y.Z` semver section found in CHANGELOG.md."
     )
     sys.exit(1)
 

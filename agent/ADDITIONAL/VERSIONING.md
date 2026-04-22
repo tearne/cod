@@ -12,6 +12,8 @@ Start at `0.1.0` if the project is not yet stable, or `1.0.0` for a first stable
 
 When in doubt, prefer a patch bump — it is always safe to increment patch, and version numbers are cheap.
 
+If the project maintains a changelog, its headings should match the versioning scheme — `## 1.2.3` for semver.
+
 ## Negotiated Bumps
 
 When a project manages releases manually, agree the bump level with the user at implementation kickoff based on what the accumulated changes represent. It is acceptable for the agreed level to change as implementation progresses.
