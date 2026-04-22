@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 0.1.8
+
+- `PROCESS.md`: trimmed five pieces of explanatory/disambiguation prose — user-review-rendered-file framing, "a well-constructed plan should not need close watching", the process-keyword-as-raw-material tail, and the two feedback-vs-aside disambiguation paragraphs.
+
 ## 0.1.7
 
 - `agent/CHANGELOG.md` headings switched to semver (`X.Y.Z`). `opt-in.py` version regex updated accordingly; installs now land under `changes/agent/<semver>/`. `ADDITIONAL/VERSIONING.md` gains a line stating project changelog headings should match the project's versioning scheme.

@@ -16,7 +16,7 @@ Start in plan mode. Transition to build requires explicit user approval of the c
 
 A change document is a single markdown file in `changes/open/`. It grows through three stages, each gated by user approval.
 
-For each stage, the agent writes the draft into the change document and then asks for approval. The user reviews the rendered file (with the help of their editor's diff view), not a chat-rendered draft. Chat is used to disclose what needs attention — notably the Unresolved list described below — and to summarise what is ready for review.
+For each stage, the agent writes the draft into the change document and then asks for approval. Draft goes into the change document; chat is for disclosures (notably Unresolved) and summaries, not the draft itself.
 
 If a `map.md` exists, it is the primary frame of reference. Describe the change in terms of the map's concepts and boundaries — not source files, not code structure. Tasks that affect mapped concepts reference the map node, not the implementing file.
 
@@ -61,7 +61,7 @@ On Plan approval, create `changes/open/active.md` containing the filename of the
 
 Work through plan tasks in order. Tick each in the change document as it completes. Follow the plan; don't redesign mid-build.
 
-Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem. A well-constructed plan should not need close watching.
+Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem.
 
 If the plan is wrong or incomplete and the path forward is unclear: stop, write a Feedback section, remove `active.md`, tell the user. The change returns to plan mode.
 
@@ -105,7 +105,7 @@ On approval of the changelog entry, add a new `## X.Y.Z` section at the top of `
 
 ### Process keyword
 
-At any point in a session the user may start a message with `process:` to capture an observation about the agent or the change process itself. These observations are raw material for later reflection — they feed back into the COD methodology when the user reviews them, not into the current task.
+At any point in a session the user may start a message with `process:` to capture an observation about the agent or the change process itself.
 
 On a `process:` message, the agent:
 
@@ -113,7 +113,7 @@ On a `process:` message, the agent:
 - Confirms capture in a single line.
 - Returns to whatever task was under way without acting on the observation.
 
-`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators. Its name echoes the build-stage **Feedback** section inside change documents, but the mechanism is distinct: this file is user-submitted observations about the methodology; Feedback sections are agent-written signals that a plan turned out wrong.
+`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators.
 
 
 ### Aside keyword
@@ -126,4 +126,4 @@ On an aside, the agent:
 - Acknowledges placement in a single line ("Captured as new proposal: …" or "Added to asides in current change: …").
 - Returns to whatever task was under way.
 
-In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard). They are distinct from `Feedback` — Feedback is agent-written and signals that the plan turned out wrong; asides are user-parked thoughts that do not block execution.
+In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard).
