@@ -19,6 +19,7 @@ VERSION = "1.2.0"
 console = Console()
 
 AGENT_DIR = Path(__file__).parent / "agent"
+CHANGELOG_SRC = Path(__file__).parent / "CHANGELOG.md"
 
 FRAMEWORK_FILES = ["README.md", "PROCESS.md", "STYLE.md", "MAP-GUIDANCE.md"]
 
@@ -60,7 +61,8 @@ def main():
     new_pointer = f"@changes/agent/{version_name}/README.md\n"
 
     copy_framework_files(version_dir)
-    copy_changelog(project_root)
+    copy_asset(CHANGELOG_SRC, version_dir / "CHANGELOG.md")
+    remove_legacy_orphan_changelog(project_root)
 
     pointer_outcome = rewrite_claude_md(project_root, new_pointer)
 
@@ -80,18 +82,17 @@ def main():
         f"\n[bold green]Done.[/bold green] Installed as [bold]{version_name}[/bold]."
     )
     console.print(
-        f"Release notes: [dim]{project_root / 'changes/agent/CHANGELOG.md'}[/dim]"
+        f"Release notes: [dim]{version_dir / 'CHANGELOG.md'}[/dim]"
     )
 
 
 def read_latest_version_from_changelog() -> str:
-    changelog = AGENT_DIR / "CHANGELOG.md"
-    if not changelog.exists():
+    if not CHANGELOG_SRC.exists():
         console.print(
             "[bold red]Error:[/bold red] source CHANGELOG.md not found — cannot determine version."
         )
         sys.exit(1)
-    for line in changelog.read_text().splitlines():
+    for line in CHANGELOG_SRC.read_text().splitlines():
         match = VERSION_HEADING_PATTERN.match(line)
         if match:
             return match.group(1)
@@ -113,20 +114,11 @@ def copy_framework_files(version_dir: Path) -> None:
                 copy_asset(f, additional_dest / f.name)
 
 
-def copy_changelog(project_root: Path) -> None:
-    src = AGENT_DIR / "CHANGELOG.md"
-    dest = project_root / "changes/agent/CHANGELOG.md"
-    if not src.exists():
-        report("conflict", dest, "source CHANGELOG.md missing — skipped")
-        return
-    content = src.read_text()
-    already_existed = dest.exists()
-    if already_existed and dest.read_text() == content:
-        report("already present", dest)
-        return
-    dest.parent.mkdir(parents=True, exist_ok=True)
-    dest.write_text(content)
-    report("updated" if already_existed else "created", dest)
+def remove_legacy_orphan_changelog(project_root: Path) -> None:
+    orphan = project_root / "changes/agent/CHANGELOG.md"
+    if orphan.exists() and orphan.is_file():
+        orphan.unlink()
+        report("removed", orphan, "legacy orphan — now lives inside each version dir")
 
 
 def copy_asset(src: Path, dest: Path) -> None:

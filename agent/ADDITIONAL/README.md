@@ -6,3 +6,4 @@ Guides not loaded by default. The user will name one in the map or a change docu
 | `RUST.md` | Rust-specific style addendum | Passive — load when writing Rust |
 | `VERSIONING.md` | Semantic versioning conventions | Prompted — prompt the user when setting up a project, changes are accumulating, or a breaking change is being made |
 | `POS.md` | Python Orchestrated Script style | Passive — load when writing a POS-style script |
+| `CHANGELOG.md` | Changelog format options (dated or semver) | Passive — load when drafting a changelog entry |

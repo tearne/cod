@@ -2,6 +2,15 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-04-25
+
+- `PROCESS.md` no longer hard-codes `agent/CHANGELOG.md`; refers to "the project's own changelog" and points at new `ADDITIONAL/CHANGELOG.md` (dated-`.N` or semver format options).
+- `opt-in.py`: source CHANGELOG now read from repo root (was `agent/CHANGELOG.md`); install destination moves inside each version dir (`changes/agent/<version>/CHANGELOG.md`); legacy orphan at `changes/agent/CHANGELOG.md` is auto-removed on next install.
+
+## 2026-04-24
+
+- `PROCESS.md`: Feedback and Conclusion become post-approval summaries, drawn from a new build-time **Log** of the unexpected. The Changelog entry step folds into Completing. `README.md` startup states refreshed to match.
+
 ## 2026-04-22.2
 
 - `PROCESS.md` **Approach** list gains a bullet: when a decision is fully carried by a proposed map node update, don't restate it in prose.

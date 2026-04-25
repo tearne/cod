@@ -7,9 +7,9 @@ Two modes: **plan** and **build**. Each change moves through a fixed sequence wi
 
 **Plan mode** — research, reason, produce a change document. Read any project file. Write only to `changes/`. Negotiate structure and approach with the user through a drafted document and an Unresolved list of open items.
 
-**Build mode** — execute an approved plan. Write to project files. Follow the plan; don't redesign. If the plan turns out to be wrong, stop and move the change to feedback rather than improvising.
+**Build mode** — execute an approved plan. Write to project files. Follow the plan; don't redesign. If the plan turns out to be wrong, stop and hand back to the user for direction rather than improvising.
 
-Start in plan mode. Transition to build requires explicit user approval of the completed plan. No transition back — if building reveals a planning problem, the change returns to plan mode via the feedback mechanism. When a change returns to plan mode, the user decides whether to re-open the Approach or revise only the Plan. The Feedback section's Notes should surface enough detail for that decision.
+Start in plan mode. Transition to build requires explicit user approval of the completed plan. No transition back — if building reveals a planning problem, the change returns to plan mode after the user agrees that replanning is needed. When a change returns to plan mode, the user decides whether to re-open the Approach or revise only the Plan. The Feedback section's Notes (written after that agreement) should surface enough detail for that decision.
 
 
 ## Plan mode
@@ -55,38 +55,48 @@ A concrete task list. Each task is a checklist item (add, update, remove, test).
 
 On Plan approval, create `changes/open/active.md` containing the filename of the change (e.g. `tighten-agent-instructions.md`, with no path prefix). This is the lock — only one change builds at a time. If `active.md` already exists, stop and tell the user. An agent resuming an interrupted build reads the change document itself to find the next unticked task.
 
+### Log
+
+During build, the agent maintains a running **Log** at the bottom of the change document — a bulleted list of the unexpected. Surprises, blockers, deviations, partial progress, or anything worth remembering between sessions that the ticked plan tasks don't already convey. Routine execution going to plan does not need logging.
+
+Most recent entry at the bottom; one or two sentences each. The agent adds to the Log during build without user prompting, but only when something warrants it.
+
+The Log is working memory, not a signal that the plan turned out wrong. It is preserved when the change is archived — the archive is the complete record.
+
 ### Executing
 
 Work through plan tasks in order. Tick each in the change document as it completes. Follow the plan; don't redesign mid-build.
 
 Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem. A well-constructed plan should not need close watching.
 
-If the plan is wrong or incomplete and the path forward is unclear: stop, write a Feedback section, remove `active.md`, tell the user. The change returns to plan mode.
+Minor surprises — unexpected details that don't break the plan — go in the Log, and the build continues.
 
-If the surprise is minor and the path forward is clear: continue, but write a Feedback section noting what was unexpected.
+If the plan is wrong or incomplete and the path forward is unclear: stop, note the blocker in the Log, remove `active.md`, tell the user. Do not write Feedback yet — that comes after the user has agreed the change needs replanning.
 
-**Feedback** has three parts:
+### Feedback
+
+Feedback is written only after the user has agreed that the plan needs revisiting. The agent drafts it from the Log plus the user's direction. It has three parts:
 
 - **Status:** implemented / partially implemented / not implemented
 - **Notes:** what came up, what's unclear, and — for partial or not implemented — what the planner should reconsider
 - **Documentation impact:** any project documents that may need review (e.g. map, spec, README)
 
-The two gates:
+Markers:
 
-- Feedback without Conclusion → needs replanning.
-- Feedback with Conclusion → build done.
+- Conclusion present → change is done.
+- Feedback present without Conclusion → change is back in plan mode, awaiting replanning.
 
 ### Completing
 
-When all tasks are done, write a Conclusion section. Ask the user to review. On approval, move the change file to `changes/archive/` (prefixed `YYYY-MM-DD-<name>.md`), remove `active.md`.
+When all plan tasks are done, tell the user and ask them to review. The Log is the record the user reads; highlight anything notable in chat. Do not write the Conclusion yet.
 
-**Conclusion** comments only on anything new — deviations, docs touched, or surprises not already captured in the change document. If nothing new, "Completed." suffices.
+On the user's confirmation that the build is done, draft the Conclusion. It comments only on what isn't already captured — deviations, docs touched, or surprises. If nothing new, "Completed." suffices. If the change is substantive (not a typo or minor doc fix) and the project maintains a changelog, the draft also proposes an entry for it (see `ADDITIONAL/CHANGELOG.md` for a recommended format if the project hasn't established one).
 
-### Changelog entry
+Surface the draft for approval. On approval:
 
-After the Conclusion is approved and before the change is archived, the agent asks whether the change warrants an entry in `agent/CHANGELOG.md`. Trivial edits (typo fixes, minor doc wording) may not. For anything substantive, the agent drafts a one-line entry, surfaces it in chat for approval or reword, then adds a new `## YYYY-MM-DD[.N]` section at the top of `agent/CHANGELOG.md` with the entry beneath.
-
-`.N` increments when today already has a section. The version name is the source of truth for the next `opt-in.py` install — the changelog heading becomes the target's directory name.
+- If a changelog entry was approved, add it to the project's changelog.
+- Move the change file to `changes/archive/` (prefixed `YYYY-MM-DD-<name>.md`).
+- Remove `active.md`.
 
 
 ## Gates and permissions
@@ -112,7 +122,7 @@ On a `process:` message, the agent:
 - Confirms capture in a single line.
 - Returns to whatever task was under way without acting on the observation.
 
-`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators. Its name echoes the build-stage **Feedback** section inside change documents, but the mechanism is distinct: this file is user-submitted observations about the methodology; Feedback sections are agent-written signals that a plan turned out wrong.
+`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators. Its name echoes the build-stage **Feedback** section inside change documents, but the mechanism is distinct: this file is user-submitted observations about the methodology; Feedback sections are agent-written summaries (post-approval) recording that a plan turned out wrong.
 
 
 ### Aside keyword
@@ -125,4 +135,4 @@ On an aside, the agent:
 - Acknowledges placement in a single line ("Captured as new proposal: …" or "Added to asides in current change: …").
 - Returns to whatever task was under way.
 
-In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard). They are distinct from `Feedback` — Feedback is agent-written and signals that the plan turned out wrong; asides are user-parked thoughts that do not block execution.
+In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard). They are distinct from `Feedback` — Feedback is an agent-written summary (post-approval) recording that the plan turned out wrong; asides are user-parked thoughts that do not block execution.

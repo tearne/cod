@@ -6,11 +6,13 @@ Always do these steps at the start of every session:
 
 1. Scan `changes/open/` and determine the state of each change:
    - **Intent only** — planning, needs Approach
-   - **Intent + Approach** — planning, needs Plan
+   - **Intent + Approach** — planning, needs Plan (Approach may still list Unresolved items)
    - **Intent + Approach + Plan** — ready to build, or awaiting plan approval
-   - **Has Feedback but no Conclusion** — needs replanning
-   - **Has Feedback and Conclusion** — build complete, review documentation impact
-   - **`active.md` exists** — a build is in progress or was interrupted
+   - **`active.md` points here, tasks remain** — build in progress or was interrupted; read the Log
+   - **`active.md` points here, all tasks ticked, no Conclusion** — build finished, awaiting wrap-up decision; read the Log
+   - **No `active.md`, Plan partly done, Log records a blocker** — build hit an impasse, awaiting user direction
+   - **Has Feedback but no Conclusion** — back in plan mode, needs replanning
+   - **Has Conclusion** — build done (review documentation impact if not already captured)
 
 2. Inspect `changes/agent/` to identify the active framework version (the one this file's path belongs to) and any other versioned directories alongside it. If other versions exist, note them — the user may want a summary of what changed. Do not read `CHANGELOG.md` unprompted; surface it only when asked.
 
