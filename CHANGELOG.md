@@ -11,6 +11,18 @@ Releases are listed in reverse-chronological order. Each entry names the version
 
 - `PROCESS.md`: Feedback and Conclusion become post-approval summaries, drawn from a new build-time **Log** of the unexpected. The Changelog entry step folds into Completing. `README.md` startup states refreshed to match.
 
+## 2026-04-22.5
+
+- `PRINCIPLES.md`: **Joy** principle renamed to **Enjoyment** (Goal #2, principle section header and body, artifact-economy corollary). No change in substance — the rename softens the emotional register for better developer palatability.
+
+## 2026-04-22.4
+
+- `PROCESS.md`: trimmed five pieces of explanatory/disambiguation prose — user-review-rendered-file framing, "a well-constructed plan should not need close watching", the process-keyword-as-raw-material tail, and the two feedback-vs-aside disambiguation paragraphs.
+
+## 2026-04-22.3
+
+- `PROCESS.md`: new Build-mode paragraph requires bumping the smallest version increment whenever a build is handed to the user for review or test, so the user can visually confirm they're on the latest.
+
 ## 2026-04-22.2
 
 - `PROCESS.md` **Approach** list gains a bullet: when a decision is fully carried by a proposed map node update, don't restate it in prose.
@@ -54,7 +66,7 @@ The framework introduces directory-based versioning under `changes/agent/<YYYY-M
 
 After running `opt-in.py`:
 
-- The new framework files are at `changes/agent/<today>/`.
-- `CLAUDE.md` now points at `@changes/agent/<today>/README.md`.
+- The new framework files are at `changes/agent/<YYYY-MM-DD[.N]>/`.
+- `CLAUDE.md` now points at `@changes/agent/<YYYY-MM-DD[.N]>/README.md`.
 - `.gitignore` has been updated to exclude `CLAUDE.md` and `changes/agent/`.
 - The old `agent/` directory is left in place. Delete it manually (`rm -rf agent`) once you're satisfied the new layout works, and remove any stale `agent/` line from `.gitignore`.

@@ -16,7 +16,7 @@ Start in plan mode. Transition to build requires explicit user approval of the c
 
 A change document is a single markdown file in `changes/open/`. It grows through three stages, each gated by user approval.
 
-For each stage, the agent writes the draft into the change document and then asks for approval. The user reviews the rendered file (with the help of their editor's diff view), not a chat-rendered draft. Chat is used to disclose what needs attention — notably the Unresolved list described below — and to summarise what is ready for review.
+For each stage, the agent writes the draft into the change document and then asks for approval. Draft goes into the change document; chat is for disclosures (notably Unresolved) and summaries, not the draft itself.
 
 If a `map.md` exists, it is the primary frame of reference. Describe the change in terms of the map's concepts and boundaries — not source files, not code structure. Tasks that affect mapped concepts reference the map node, not the implementing file.
 
@@ -51,6 +51,8 @@ A concrete task list. Each task is a checklist item (add, update, remove, test).
 
 ## Build mode
 
+If the project uses versioning, bump by the smallest increment whenever a build is handed to the user for review or test, so they can visually confirm they're on the latest. Announce the new value.
+
 ### Entering build
 
 On Plan approval, create `changes/open/active.md` containing the filename of the change (e.g. `tighten-agent-instructions.md`, with no path prefix). This is the lock — only one change builds at a time. If `active.md` already exists, stop and tell the user. An agent resuming an interrupted build reads the change document itself to find the next unticked task.
@@ -67,7 +69,7 @@ The Log is working memory, not a signal that the plan turned out wrong. It is pr
 
 Work through plan tasks in order. Tick each in the change document as it completes. Follow the plan; don't redesign mid-build.
 
-Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem. A well-constructed plan should not need close watching.
+Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem.
 
 Minor surprises — unexpected details that don't break the plan — go in the Log, and the build continues.
 
@@ -114,7 +116,7 @@ Surface the draft for approval. On approval:
 
 ### Process keyword
 
-At any point in a session the user may start a message with `process:` to capture an observation about the agent or the change process itself. These observations are raw material for later reflection — they feed back into the COD methodology when the user reviews them, not into the current task.
+At any point in a session the user may start a message with `process:` to capture an observation about the agent or the change process itself.
 
 On a `process:` message, the agent:
 
@@ -122,7 +124,7 @@ On a `process:` message, the agent:
 - Confirms capture in a single line.
 - Returns to whatever task was under way without acting on the observation.
 
-`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators. Its name echoes the build-stage **Feedback** section inside change documents, but the mechanism is distinct: this file is user-submitted observations about the methodology; Feedback sections are agent-written summaries (post-approval) recording that a plan turned out wrong.
+`changes/process-feedback.md` is a single append-only file, tracked in git, shared between collaborators.
 
 
 ### Aside keyword
@@ -135,4 +137,4 @@ On an aside, the agent:
 - Acknowledges placement in a single line ("Captured as new proposal: …" or "Added to asides in current change: …").
 - Returns to whatever task was under way.
 
-In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard). They are distinct from `Feedback` — Feedback is an agent-written summary (post-approval) recording that the plan turned out wrong; asides are user-parked thoughts that do not block execution.
+In-proposal asides during Intent/Approach/Plan discussion fold into the change as planning proceeds. In-proposal asides during Build sit until Conclusion time, when the user decides their fate (fold into Conclusion, spin off as new proposals, or discard).
