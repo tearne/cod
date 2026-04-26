@@ -2,6 +2,14 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-04-26.2
+
+- `MAP-GUIDANCE.md` and `PROCESS.md`: removed pre-staging of map edits in an Approach. Map-only work happens as plan-mode per-node negotiation, exempt from the change lifecycle. For code changes, Build typically doesn't touch the map; map catch-up follows the build as a per-node negotiation, with rare tightly-bound exceptions still allowed. The Completing section now prompts the planner to flag whether the map needs catching up at hand-back time.
+
+## 2026-04-26.1
+
+- `README.md`: removed the per-startup `changes/agent/` version scan (step 2) — it had no anchor for which version was previously active. Replaced with a new `## On version update` section: when the user reports an update, the agent diffs `CLAUDE.md`'s `@` pointer against git history and reads the new version's `CHANGELOG.md` for migration concerns. Reactive instead of every-session.
+
 ## 2026-04-26
 
 - `MAP-GUIDANCE.md`: new `### Root node naming` subsection establishes a convention — default to the project's name, with unambiguity as the governing rule and four resolution styles for name clashes with internal concepts.

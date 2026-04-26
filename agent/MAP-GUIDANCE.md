@@ -121,14 +121,11 @@ Two rules govern every map edit.
 
 The map is exempt from the active-change requirement: edits that describe existing reality may happen at any time.
 
-### Pre-staging edits in an Approach
+### Map edits and the change lifecycle
 
-Map edits for a change are deferred until Build (Sync rule). Pre-negotiate them per-node in the Approach document, where Plan tasks can be written directly from the layout:
+Map edits are negotiated per-node per the Engagement rule — never pre-staged as wholesale node bodies in an Approach. Map-only work happens as per-node negotiation directly, exempt from the change lifecycle alongside the existing active-change exemption.
 
-- **Per-node edits.** One subsection per node being changed. For a content update, show the **full proposed node content**, not a diff — nodes are small, so the whole node supports unambiguous review. For a removal or move, state what happens to the node, where its children go, and how incoming links are handled. Each subsection becomes its own Plan task.
-- **Global renames or cross-cutting touches.** A separate subsection when a single change sweeps across many nodes uniformly (e.g. renaming a concept). These become cross-cutting Plan tasks rather than per-node ones.
-
-Build executes these pre-negotiated edits without reopening structure.
+For code changes, Approach and Plan typically don't propose map edits and Build doesn't touch the map. Map catch-up follows the build as a per-node negotiation. The completed change's Conclusion may carry a starter draft. Tightly-bound exceptions where small map work rides along a code change are allowed when it genuinely fits.
 
 
 ## Maintaining the map

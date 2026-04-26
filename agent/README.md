@@ -14,11 +14,13 @@ Always do these steps at the start of every session:
    - **Has Feedback but no Conclusion** — back in plan mode, needs replanning
    - **Has Conclusion** — build done (review documentation impact if not already captured)
 
-2. Inspect `changes/agent/` to identify the active framework version (the one this file's path belongs to) and any other versioned directories alongside it. If other versions exist, note them — the user may want a summary of what changed. Do not read `CHANGELOG.md` unprompted; surface it only when asked.
+2. Announce your mode (plan or build) based on what you found.
 
-3. Announce your mode (plan or build) based on what you found.
+3. Report the scan results and propose next steps to the user.
 
-4. Report the scan results, any additional version directories, and propose next steps to the user.
+## On version update
+
+When the user reports the agent directory has been updated, identify the new and previous versions from `CLAUDE.md`'s `@` pointer — current value and prior value from git history. Read the new version's `CHANGELOG.md` (each version directory ships its own) for the entries between then and now, and surface migration concerns.
 
 ## Rules
 

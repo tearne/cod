@@ -26,7 +26,7 @@ Why the change is needed. Domain language — what the user wants, not how the a
 
 ### Approach
 
-How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps. Map edits that describe the proposed change are deferred to Build and executed as Plan tasks; pre-stage them in the Approach per `MAP-GUIDANCE.md`. Map edits that bring the map in line with existing code (stale catch-ups) remain permitted at any time.
+How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps. Map edits are handled per `MAP-GUIDANCE.md`. Stale catch-ups (bringing the map in line with existing code) remain permitted at any time.
 
 Once Intent is approved, the agent writes the Approach into the change document. Treat it as a list of decisions and their reasons, not a narrative:
 
@@ -90,7 +90,7 @@ Markers:
 
 ### Completing
 
-When all plan tasks are done, tell the user and ask them to review. The Log is the record the user reads; highlight anything notable in chat. Do not write the Conclusion yet.
+When all plan tasks are done, tell the user and ask them to review. The Log is the record the user reads; highlight anything notable in chat. If the build affected mapped concepts, flag whether the map needs catching up. Do not write the Conclusion yet.
 
 On the user's confirmation that the build is done, draft the Conclusion. It comments only on what isn't already captured — deviations, docs touched, or surprises. If nothing new, "Completed." suffices. If the change is substantive (not a typo or minor doc fix) and the project maintains a changelog, the draft also proposes an entry for it (see `ADDITIONAL/CHANGELOG.md` for a recommended format if the project hasn't established one).
 
