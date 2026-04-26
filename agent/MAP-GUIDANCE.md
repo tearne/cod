@@ -69,6 +69,19 @@ All optional. Always in this order when present:
 - **Detail** — implementation-level precision (parameters, thresholds, algorithms). The user can stop reading before this. Marked with bold `**Detail**`.
 - **See also** — cross-cutting references that aren't parent/child. Marked with bold `**See also**`. Each entry says why the relationship matters.
 
+### Root node naming
+
+Default to the project's name at the root. Every file-root H1 must be unambiguous with every other heading in the map — duplicates break navigation (fragile auto-generated anchors, indistinguishable jump-picker entries).
+
+When the project name clashes with a prominent internal concept, pick whichever form reads best:
+
+- Domain scoping term for the root ("Audio Player", "Build Tool").
+- Suffix ("Deck Application Map", "Deck Map Subtree").
+- Parenthetical ("Deck (Application)").
+- Rename the internal node more specifically.
+
+Prefer a term that carries domain information over a generic "Application".
+
 
 ## Node sizing
 

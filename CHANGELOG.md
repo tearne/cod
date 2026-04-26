@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-04-26
+
+- `MAP-GUIDANCE.md`: new `### Root node naming` subsection establishes a convention — default to the project's name, with unambiguity as the governing rule and four resolution styles for name clashes with internal concepts.
+
 ## 2026-04-25
 
 - `PROCESS.md` no longer hard-codes `agent/CHANGELOG.md`; refers to "the project's own changelog" and points at new `ADDITIONAL/CHANGELOG.md` (dated-`.N` or semver format options).
