@@ -49,3 +49,4 @@ If the project has a `map.md`, it is the primary frame of reference for understa
 @PROCESS.md
 @STYLE.md
 @MAP-GUIDANCE.md
+@KEYWORDS.md

@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-04-28.2
+
+- Keywords section moved out of `PROCESS.md` into a new `agent/KEYWORDS.md`. `PROCESS.md` keeps a short pointer under its own `Session keywords` heading; `agent/README.md` adds `@KEYWORDS.md` to the framework `@` pointer list. `PROCESS.md` now focuses purely on the change lifecycle.
+
 ## 2026-04-28.1
 
 - `PROCESS.md`: Plan stage now offers two building blocks — Tasks (the existing checklist) and Topics + done-when (for exploration) — that combine as the work demands. Executing rule relaxes to "follow the Plan", ticking where tasks are present and working topics toward the done-when condition. The Plan's shape itself signals the cadence; no separate "kind" label introduced. Also dropped a stale map line that contradicted the per-node-map-edits rule.
