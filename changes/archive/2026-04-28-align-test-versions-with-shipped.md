@@ -16,5 +16,17 @@ The first test handover lands at that resolved version — `0.7.0` is flashed du
 
 ## Plan
 
-- [ ] Replace `PROCESS.md`'s Build-mode versioning paragraph with the new rule: Plan records the kind of bump, Build resolves it against current latest, refinements bump patch, final tested version is what ships, Conclusion confirms or revises the bump kind if scope shifted.
-- [ ] Add to `PROCESS.md`'s Plan stage that for projects with versioning, the Plan includes a task to bump version by the planned kind.
+- [x] Replace `PROCESS.md`'s Build-mode versioning paragraph with the new rule: Plan records the kind of bump, Build resolves it against current latest, refinements bump patch, final tested version is what ships, Conclusion confirms or revises the bump kind if scope shifted.
+- [x] Add to `PROCESS.md`'s Plan stage that for projects with versioning, the Plan includes a task to bump version by the planned kind.
+
+## Conclusion
+
+Completed.
+
+### Proposed changelog entry
+
+```
+## 2026-04-28
+
+- `PROCESS.md`: replaced the "smallest increment" versioning rule. Plan now records the kind of bump (major/minor/patch or date-based equivalent) and Build resolves it against the current latest at start — keeps the bump correct when plans sit idle. Refinements during test bump patch; the final tested version is what ships, in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
+```

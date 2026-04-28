@@ -2,6 +2,14 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-04-28.1
+
+- `PROCESS.md`: Plan stage now offers two building blocks — Tasks (the existing checklist) and Topics + done-when (for exploration) — that combine as the work demands. Executing rule relaxes to "follow the Plan", ticking where tasks are present and working topics toward the done-when condition. The Plan's shape itself signals the cadence; no separate "kind" label introduced. Also dropped a stale map line that contradicted the per-node-map-edits rule.
+
+## 2026-04-28
+
+- `PROCESS.md`: replaced the "smallest increment" versioning rule. Plan now records the kind of bump (major/minor/patch or date-based equivalent) and Build resolves it against the current latest at start — keeps the bump correct when plans sit idle. Refinements during test bump patch; the final tested version is what ships, in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
+
 ## 2026-04-26.2
 
 - `MAP-GUIDANCE.md` and `PROCESS.md`: removed pre-staging of map edits in an Approach. Map-only work happens as plan-mode per-node negotiation, exempt from the change lifecycle. For code changes, Build typically doesn't touch the map; map catch-up follows the build as a per-node negotiation, with rare tightly-bound exceptions still allowed. The Completing section now prompts the planner to flag whether the map needs catching up at hand-back time.

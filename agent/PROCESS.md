@@ -46,12 +46,20 @@ The Unresolved section is deleted once the Plan is written — its absence signa
 
 ### Plan
 
-A concrete task list. Each task is a checklist item (add, update, remove, test). Map update tasks sit alongside implementation tasks — same list, same execution. Ask the user to approve.
+The Plan describes what Build executes, in whichever shape fits the work. Two building blocks combine as needed:
+
+- **Tasks.** Discrete checklist items, rendered as `- [ ] do thing` and ticked as completed. Use when each step is known and the work is incremental.
+
+- **Topics + done-when.** A bulleted list under **Topics**, followed by a **Done when** line naming completion. No tick boxes. Use for exploration where depth matters more than throughput.
+
+A Plan can carry one block or both. Pick the shape that matches the work; when in doubt, ask the user.
+
+For projects with versioning, the Plan includes a task to bump version by the planned kind. Ask the user to approve.
 
 
 ## Build mode
 
-If the project uses versioning, bump by the smallest increment whenever a build is handed to the user for review or test, so they can visually confirm they're on the latest. Announce the new value.
+If the project uses versioning, the Plan records the kind of bump (major/minor/patch, or date-based equivalent) rather than the exact version — plans may sit idle, and resolving the kind against the current latest at Build start keeps the bump correct. Build executes the bump on entering and announces the value. Refinements during test bump patch. The final tested version is what ships, recorded in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
 
 ### Entering build
 
@@ -67,7 +75,7 @@ The Log is working memory, not a signal that the plan turned out wrong. It is pr
 
 ### Executing
 
-Work through plan tasks in order. Tick each in the change document as it completes. Follow the plan; don't redesign mid-build.
+Follow the Plan. Where it has tasks, work through them in order, ticking each in the change document as it completes. Where it has topics, work them toward the done-when condition. Don't redesign mid-build.
 
 Post concise progress updates on screen as the work proceeds, but do not pause for interaction task by task. Only interact mid-build when something warrants it: surprises, ambiguity, or a plan problem.
 
