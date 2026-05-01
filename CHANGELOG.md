@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-05-01
+
+- `opt-in.py`: `FRAMEWORK_FILES` now includes `KEYWORDS.md` — `@`-imported by `agent/README.md` but previously not copied to consumer projects, so its `@`-import failed silently. `PRINCIPLES.md` moved out of `agent/` to the project root: it's reference material for evaluators of the framework, not part of the agent context, and doesn't ship to consumers. Top-level `README.md` gains a `Dev repo vs consumer projects` section flagging the layout asymmetry, loaded into agent context via a new `@README.md` line in this repo's `CLAUDE.md`. Existing consumer projects on a recent version need a re-run of `opt-in.py` to pick up the newly-copied `KEYWORDS.md`.
+
 ## 2026-04-28.2
 
 - Keywords section moved out of `PROCESS.md` into a new `agent/KEYWORDS.md`. `PROCESS.md` keeps a short pointer under its own `Session keywords` heading; `agent/README.md` adds `@KEYWORDS.md` to the framework `@` pointer list. `PROCESS.md` now focuses purely on the change lifecycle.

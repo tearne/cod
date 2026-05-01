@@ -21,7 +21,7 @@ console = Console()
 AGENT_DIR = Path(__file__).parent / "agent"
 CHANGELOG_SRC = Path(__file__).parent / "CHANGELOG.md"
 
-FRAMEWORK_FILES = ["README.md", "PROCESS.md", "STYLE.md", "MAP-GUIDANCE.md"]
+FRAMEWORK_FILES = ["README.md", "PROCESS.md", "STYLE.md", "MAP-GUIDANCE.md", "KEYWORDS.md"]
 
 POINTER_PATTERN = re.compile(r"^@(agent/README\.md|changes/agents?/.*README\.md)\s*$")
 
