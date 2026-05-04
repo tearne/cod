@@ -7,24 +7,34 @@ Two modes: **plan** and **build**. Each change moves through a fixed sequence wi
 
 **Plan mode** — research, reason, produce a change document. Read any project file. Write only to `changes/`. Negotiate structure and approach with the user through a drafted document and an Unresolved list of open items.
 
-**Build mode** — execute an approved plan. Write to project files. Follow the plan; don't redesign. If the plan turns out to be wrong, stop and hand back to the user for direction rather than improvising.
-
-Start in plan mode. Transition to build requires explicit user approval of the completed plan. No transition back — if building reveals a planning problem, the change returns to plan mode after the user agrees that replanning is needed. When a change returns to plan mode, the user decides whether to re-open the Approach or revise only the Plan. The Feedback section's Notes (written after that agreement) should surface enough detail for that decision.
+**Build mode** — execute an approved plan. Write to project files. Follow the plan; don't redesign. If the plan turns out to be wrong, stop and hand back to the user for direction rather than improvising. The user may choose to rework the plan, but it must stay active if code has been changed.
 
 
 ## Plan mode
 
-A change document is a single markdown file in `changes/open/`. It grows through three stages, each gated by user approval.
+A change document is a single markdown file in `changes/open/`. Directly under the title, a `**Mode:** <name>` line records the mode (see Modes below).
 
-For each stage, the agent writes the draft into the change document and then asks for approval. Draft goes into the change document; chat is for disclosures (notably Unresolved) and summaries, not the draft itself.
+Each stage is drafted into the change document, then surfaced for approval. Chat carries disclosures (notably Unresolved) and summaries, not the draft itself.
 
 If a `map.md` exists, it is the primary frame of reference. Describe the change in terms of the map's concepts and boundaries — not source files, not code structure. Tasks that affect mapped concepts reference the map node, not the implementing file.
+
+### Modes
+
+A change runs in one of three modes. After Intent is approved, the agent proposes one (default Formal) and the user confirms.
+
+- **Formal** — Intent → Approach → Plan-as-tasks → Build → Conclusion. The default; the heavyweight cadence for work that benefits from explicit decisions and an executable checklist.
+- **Explore** — same gates as Formal, but the Plan is topics + done-when rather than tasks. For work where depth and coverage matter more than a fixed step list.
+- **Wander** — Intent → Build → retrospective Conclusion. No Approach, no Plan. When the agent detects a topic shift, it reminds the user a Wander change is open and may offer to flush. Discarded Wander changes are deleted (no archive). The change name may be updated to reflect where the work ended up.
+
+Mode can be changed mid-flight: the user pauses, the change document is rewritten into the target mode's shape, and work resumes.
 
 ### Intent
 
 Why the change is needed. Domain language — what the user wants, not how the agent will do it. Brief. Ask the user to approve before continuing.
 
 ### Approach
+
+(Formal and Explore only — Wander skips this stage.)
 
 How the change will be implemented. Read the codebase. If a map exists, read it to understand the affected area and identify coverage gaps. Map edits are handled per `MAP-GUIDANCE.md`. Stale catch-ups (bringing the map in line with existing code) remain permitted at any time.
 
@@ -36,30 +46,39 @@ Once Intent is approved, the agent writes the Approach into the change document.
 - When a decision is fully carried by a proposed map node update, don't restate it in prose — the node is the decision. Prose is for decisions that aren't in a node, or for the "why" the node can't convey.
 - If a subsection can be deleted without losing a decision, delete it.
 
+Before surfacing, the agent re-reads its own draft and removes anything that doesn't carry a decision-and-reason: recap of Intent, file-by-file rehearsal, hedging, restating choices already in proposed map nodes. Each line either carries a decision-and-reason or comes out. Only the post-prune draft is surfaced.
+
+If the post-prune Approach still exceeds 1000 characters (excluding tables and diagrams), the agent doesn't surface it as final. It asks the user whether to condense further and highlights borderline content — significant material that might get cut but isn't essential — so the user can adjudicate.
+
 Alongside the Approach, the agent writes an **Unresolved** section at the end of the document — a short bulleted list of the items the agent cannot settle alone, each pointing to the part of the Approach it affects.
 
 After writing, the agent discloses the Unresolved list in chat so the user can answer immediately without opening the file. The user reviews the draft and answers the items (inline reply is fine). The agent folds the answers back into the Approach prose and removes resolved items from the list. When the list is empty, the Approach is ready for the user's explicit approval.
-
-If the user disagrees with something the agent had already settled, they raise it like a new item. The agent folds the resolution in and adds new Unresolved items for any downstream choices now reopened.
 
 The Unresolved section is deleted once the Plan is written — its absence signals that the Approach is settled.
 
 ### Plan
 
-The Plan describes what Build executes, in whichever shape fits the work. Two building blocks combine as needed:
+The Plan describes what Build executes. The shape is set by mode:
 
-- **Tasks.** Discrete checklist items, rendered as `- [ ] do thing` and ticked as completed. Use when each step is known and the work is incremental.
+- **Formal — Tasks.** Discrete checklist items, rendered as `- [ ] do thing` and ticked as completed.
+- **Explore — Topics + done-when.** A bulleted list under **Topics**, followed by a **Done when** line naming completion. No tick boxes.
 
-- **Topics + done-when.** A bulleted list under **Topics**, followed by a **Done when** line naming completion. No tick boxes. Use for exploration where depth matters more than throughput.
+Wander has no Plan stage.
 
-A Plan can carry one block or both. Pick the shape that matches the work; when in doubt, ask the user.
+Plan prune rules:
+
+- One task per atomic outcome.
+- No "why" — that's the Approach's job.
+- No obvious sub-steps.
+- No ceremony tasks ("review", "double-check") without a real gate.
+- Don't restate file paths the task name already implies.
 
 For projects with versioning, the Plan includes a task to bump version by the planned kind. Ask the user to approve.
 
 
 ## Build mode
 
-If the project uses versioning, the Plan records the kind of bump (major/minor/patch, or date-based equivalent) rather than the exact version — plans may sit idle, and resolving the kind against the current latest at Build start keeps the bump correct. Build executes the bump on entering and announces the value. Refinements during test bump patch. The final tested version is what ships, recorded in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
+Build executes the bump on entering and announces the value. Refinements during user testing bump patch. The final tested version is what ships, recorded in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
 
 ### Entering build
 
@@ -69,7 +88,7 @@ On Plan approval, create `changes/open/active.md` containing the filename of the
 
 During build, the agent maintains a running **Log** at the bottom of the change document — a bulleted list of the unexpected. Surprises, blockers, deviations, partial progress, or anything worth remembering between sessions that the ticked plan tasks don't already convey. Routine execution going to plan does not need logging.
 
-Most recent entry at the bottom; one or two sentences each. The agent adds to the Log during build without user prompting, but only when something warrants it.
+Most recent entry at the bottom; one or two sentences each. The agent adds to the Log without user prompting.
 
 The Log is working memory, not a signal that the plan turned out wrong. It is preserved when the change is archived — the archive is the complete record.
 
@@ -81,7 +100,7 @@ Post concise progress updates on screen as the work proceeds, but do not pause f
 
 Minor surprises — unexpected details that don't break the plan — go in the Log, and the build continues.
 
-If the plan is wrong or incomplete and the path forward is unclear: stop, note the blocker in the Log, remove `active.md`, tell the user. Do not write Feedback yet — that comes after the user has agreed the change needs replanning.
+If the plan is wrong or incomplete and the path forward is unclear: stop, note the blocker in the Log, tell the user. Remove `active.md` only if no code has been changed; if the build left code half-finished the change stays active.
 
 ### Feedback
 
@@ -100,7 +119,9 @@ Markers:
 
 When all plan tasks are done, tell the user and ask them to review. The Log is the record the user reads; highlight anything notable in chat. If the build affected mapped concepts, flag whether the map needs catching up. Do not write the Conclusion yet.
 
-On the user's confirmation that the build is done, draft the Conclusion. It comments only on what isn't already captured — deviations, docs touched, or surprises. If nothing new, "Completed." suffices. If the change is substantive (not a typo or minor doc fix) and the project maintains a changelog, the draft also proposes an entry for it (see `ADDITIONAL/CHANGELOG.md` for a recommended format if the project hasn't established one).
+On the user's confirmation that the build is done, draft the Conclusion. It comments only on what isn't already captured — deviations, docs touched, or surprises. If nothing new, "Completed." suffices. For substantive changes to projects with a changelog, the draft also proposes an entry (see `ADDITIONAL/CHANGELOG.md`).
+
+For Wander, the Conclusion is retrospective and captures the approach itself — there was no Approach stage to record it. The change name is updated if the work ended up somewhere different from the Intent.
 
 Surface the draft for approval. On approval:
 

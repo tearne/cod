@@ -4,13 +4,20 @@
 
 Always do these steps at the start of every session:
 
-1. Scan `changes/open/` and determine the state of each change:
+1. Scan `changes/open/`. Read each change's `**Mode:**` line first, then determine state:
+
+   **Formal / Explore:**
    - **Intent only** — planning, needs Approach
    - **Intent + Approach** — planning, needs Plan (Approach may still list Unresolved items)
    - **Intent + Approach + Plan** — ready to build, or awaiting plan approval
-   - **`active.md` points here, tasks remain** — build in progress or was interrupted; read the Log
-   - **`active.md` points here, all tasks ticked, no Conclusion** — build finished, awaiting wrap-up decision; read the Log
-   - **No `active.md`, Plan partly done, Log records a blocker** — build hit an impasse, awaiting user direction
+
+   **Wander:**
+   - **Intent only, no `active.md`** — awaiting Build approval
+
+   **Any mode (build state):**
+   - **`active.md` points here, work remains** (Formal/Explore: tasks unticked; Wander: no Conclusion) — build in progress or was interrupted; read the Log
+   - **`active.md` points here, work complete, no Conclusion** — build finished, awaiting wrap-up decision; read the Log
+   - **No `active.md`, plan partly done, Log records a blocker** — build hit an impasse, awaiting user direction
    - **Has Feedback but no Conclusion** — back in plan mode, needs replanning
    - **Has Conclusion** — build done (review documentation impact if not already captured)
 

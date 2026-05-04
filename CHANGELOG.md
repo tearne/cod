@@ -2,6 +2,14 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-05-04.1
+
+- `PROCESS.md`: change documents now declare a **Mode** under the title. **Formal** is the existing full sequence. **Explore** swaps the Plan checklist for topics + done-when. **Wander** runs Intent → Build → retrospective Conclusion with no Approach or Plan, gets topic-shift flush prompts, and is deleted (not archived) on discard. Mode is chosen after Intent (default Formal) and can be changed mid-flight by rewriting the document. Adjacent fix: blocker handling keeps `active.md` when code has been changed.
+
+## 2026-05-04
+
+- `PROCESS.md`: Approach gains a mandatory self-prune step before surfacing — every line must carry a decision-and-reason — and a 1000-character condense trigger that asks the user to adjudicate borderline content if exceeded (tables and diagrams exempt). Plan gains a short list of prune rules (one atomic outcome per task, no "why", no obvious sub-steps, no ceremony tasks, no redundant file paths). Several existing paragraphs across Plan mode and Build mode trimmed in the same pass.
+
 ## 2026-05-01
 
 - `opt-in.py`: `FRAMEWORK_FILES` now includes `KEYWORDS.md` — `@`-imported by `agent/README.md` but previously not copied to consumer projects, so its `@`-import failed silently. `PRINCIPLES.md` moved out of `agent/` to the project root: it's reference material for evaluators of the framework, not part of the agent context, and doesn't ship to consumers. Top-level `README.md` gains a `Dev repo vs consumer projects` section flagging the layout asymmetry, loaded into agent context via a new `@README.md` line in this repo's `CLAUDE.md`. Existing consumer projects on a recent version need a re-run of `opt-in.py` to pick up the newly-copied `KEYWORDS.md`.
