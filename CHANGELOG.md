@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-05-05
+
+- `PROCESS.md`: self-prune step now applies to the Plan stage as well as the Approach — agent re-reads the Plan and applies the prune rules before surfacing.
+
 ## 2026-05-04.1
 
 - `PROCESS.md`: change documents now declare a **Mode** under the title. **Formal** is the existing full sequence. **Explore** swaps the Plan checklist for topics + done-when. **Wander** runs Intent → Build → retrospective Conclusion with no Approach or Plan, gets topic-shift flush prompts, and is deleted (not archived) on discard. Mode is chosen after Intent (default Formal) and can be changed mid-flight by rewriting the document. Adjacent fix: blocker handling keeps `active.md` when code has been changed.

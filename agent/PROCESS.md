@@ -73,6 +73,8 @@ Plan prune rules:
 - No ceremony tasks ("review", "double-check") without a real gate.
 - Don't restate file paths the task name already implies.
 
+Before surfacing the Plan, the agent re-reads it and applies these rules.
+
 For projects with versioning, the Plan includes a task to bump version by the planned kind. Ask the user to approve.
 
 
