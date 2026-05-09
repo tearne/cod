@@ -28,6 +28,18 @@ A change runs in one of three modes. After Intent is approved, the agent propose
 
 Mode can be changed mid-flight: the user pauses, the change document is rewritten into the target mode's shape, and work resumes.
 
+### Section length triggers
+
+If a section exceeds its threshold, the agent doesn't surface it as final. It flags borderline content — significant material that might get cut but isn't essential — and asks the user to adjudicate. Tables and diagrams are excluded from the count.
+
+| Section    | Threshold |
+|------------|-----------|
+| Intent     | 500       |
+| Approach   | 1000      |
+| Conclusion | 500 (Wander: 1000) |
+
+Plan has no threshold; the Plan prune rules cover it.
+
 ### Intent
 
 Why the change is needed. Domain language — what the user wants, not how the agent will do it. Brief. Ask the user to approve before continuing.
@@ -46,9 +58,7 @@ Once Intent is approved, the agent writes the Approach into the change document.
 - When a decision is fully carried by a proposed map node update, don't restate it in prose — the node is the decision. Prose is for decisions that aren't in a node, or for the "why" the node can't convey.
 - If a subsection can be deleted without losing a decision, delete it.
 
-Before surfacing, the agent re-reads its own draft and removes anything that doesn't carry a decision-and-reason: recap of Intent, file-by-file rehearsal, hedging, restating choices already in proposed map nodes. Each line either carries a decision-and-reason or comes out. Only the post-prune draft is surfaced.
-
-If the post-prune Approach still exceeds 1000 characters (excluding tables and diagrams), the agent doesn't surface it as final. It asks the user whether to condense further and highlights borderline content — significant material that might get cut but isn't essential — so the user can adjudicate.
+Before surfacing, the agent re-reads its own draft and removes anything that doesn't carry a decision-and-reason: recap of Intent, file-by-file rehearsal, hedging, restating choices already in proposed map nodes. Each line either carries a decision-and-reason or comes out. Only the post-prune draft is surfaced. The Section length triggers rule then applies.
 
 Alongside the Approach, the agent writes an **Unresolved** section at the end of the document — a short bulleted list of the items the agent cannot settle alone, each pointing to the part of the Approach it affects.
 
@@ -75,16 +85,14 @@ Plan prune rules:
 
 Before surfacing the Plan, the agent re-reads it and applies these rules.
 
-For projects with versioning, the Plan includes a task to bump version by the planned kind. Ask the user to approve.
-
 
 ## Build mode
 
-Build executes the bump on entering and announces the value. Refinements during user testing bump patch. The final tested version is what ships, recorded in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
+For projects with versioning, on entering Build the agent proposes a bump kind (major/minor/patch or date-based equivalent) against the current latest version, asks the user to approve, and writes it. Every subsequent hand-back to the user for testing bumps patch — initial completion or any later tweak — so the user can tell at a glance whether they are seeing the latest build. The final tested value is what ships, recorded in a single changelog entry. Conclusion confirms or revises the bump kind if scope shifted.
 
 ### Entering build
 
-On Plan approval, create `changes/open/active.md` containing the filename of the change (e.g. `tighten-agent-instructions.md`, with no path prefix). This is the lock — only one change builds at a time. If `active.md` already exists, stop and tell the user. An agent resuming an interrupted build reads the change document itself to find the next unticked task.
+On approval to enter Build (Plan approval for Formal/Explore, Intent approval for Wander), create `changes/open/active.md` containing the filename of the change (e.g. `tighten-agent-instructions.md`, with no path prefix). This is the lock — only one change builds at a time. If `active.md` already exists, stop and tell the user. An agent resuming an interrupted build reads the change document itself to find the next unticked task.
 
 ### Log
 

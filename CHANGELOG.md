@@ -2,6 +2,14 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-05-09.1
+
+- `PROCESS.md`: versioning is now a Build-mode concern, not a Plan-stage one. On entering Build the agent proposes a bump kind, gets user approval, and writes the version — same flow in any mode (Formal/Explore/Wander). Every subsequent test hand-back bumps patch so the user can tell at a glance whether they are seeing the latest build. Adjacent fix: Entering build's "On Plan approval" trigger generalised to cover Wander (Intent approval).
+
+## 2026-05-09
+
+- `PROCESS.md`: section length triggers consolidated into a single rule and table under Plan mode. Intent and Conclusion gain 500-char triggers; Approach keeps its 1000; Conclusion in Wander gets 1000 (it carries the Approach work retrospectively). Tables and diagrams remain exempt. Same mechanism throughout — over threshold, the agent flags borderline content for the user to adjudicate.
+
 ## 2026-05-05
 
 - `PROCESS.md`: self-prune step now applies to the Plan stage as well as the Approach — agent re-reads the Plan and applies the prune rules before surfacing.
