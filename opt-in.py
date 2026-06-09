@@ -14,7 +14,7 @@ from pathlib import Path
 
 from rich.console import Console
 
-VERSION = "1.2.0"
+VERSION = "1.2.2"
 
 console = Console()
 
@@ -39,6 +39,25 @@ def git_root() -> Path:
     return Path(result.stdout.strip())
 
 
+def confirm_install_root(project_root: Path) -> None:
+    invoked_from = Path.cwd()
+    if invoked_from.resolve() == project_root.resolve():
+        return
+    console.print(
+        f"[bold yellow]Install root differs from where you are.[/bold yellow]\n"
+        f"  git repository root:  [bold]{project_root}[/bold]\n"
+        f"  you ran this from:    [bold]{invoked_from}[/bold]\n"
+        "Framework files will install at the repository root, not here.\n"
+    )
+    if not sys.stdin.isatty():
+        console.print("[bold red]Aborted:[/bold red] no terminal to confirm — re-run from the repository root.")
+        sys.exit(1)
+    answer = console.input("Install at the repository root anyway? [y/N] ").strip().lower()
+    if answer not in ("y", "yes"):
+        console.print("[bold red]Aborted.[/bold red]")
+        sys.exit(1)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Opt a project in to the agent change process."
@@ -55,6 +74,8 @@ def main():
             "This script is its own source of truth; running it here would install the agent files on top of themselves."
         )
         sys.exit(1)
+
+    confirm_install_root(project_root)
 
     version_name = read_latest_version_from_changelog()
     version_dir = project_root / "changes/agent" / version_name
