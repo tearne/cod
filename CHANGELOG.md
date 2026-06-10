@@ -2,6 +2,10 @@
 
 Releases are listed in reverse-chronological order. Each entry names the version (the directory name under `changes/agent/`) and describes what changed and any manual migration steps.
 
+## 2026-06-10
+
+- `opt-in.py`: installs can now target a subdirectory rather than always the git repository root. Run from a subdir, the script reports the repo root and the current directory and asks to confirm a subdir install (default no); declining aborts. The chosen install root gets its own self-contained `changes/` tree, `CLAUDE.md`, and `.gitignore`, so several agents can work independently in separate subdirs of one repo. Running from the repo root is unchanged and unprompted. Script `--version` bumps to 1.3.0.
+
 ## 2026-05-09.1
 
 - `PROCESS.md`: versioning is now a Build-mode concern, not a Plan-stage one. On entering Build the agent proposes a bump kind, gets user approval, and writes the version — same flow in any mode (Formal/Explore/Wander). Every subsequent test hand-back bumps patch so the user can tell at a glance whether they are seeing the latest build. Adjacent fix: Entering build's "On Plan approval" trigger generalised to cover Wander (Intent approval).

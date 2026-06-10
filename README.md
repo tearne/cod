@@ -16,6 +16,8 @@ Working in this repo is unlike consuming the framework via `opt-in.py`. Here, `a
 
 When reasoning about what consumers see, `opt-in.py` is authoritative — `FRAMEWORK_FILES` is the list of files that actually reach consumers. A file `@`-imported by `agent/README.md` but missing from `FRAMEWORK_FILES` will silently fail to load in any consumer project, while loading fine here.
 
+By default the install targets the git repository root. Run `opt-in.py` from within a subdirectory and it offers to set that subdirectory up instead, giving it its own self-contained `changes/` tree, `CLAUDE.md`, and `.gitignore`. This lets several agents work independently in separate subdirs of one repo.
+
 ## Changelog
 
 This project's changelog lives at [`CHANGELOG.md`](CHANGELOG.md) and uses the dated `.N` format described in [`agent/ADDITIONAL/CHANGELOG.md`](agent/ADDITIONAL/CHANGELOG.md). `opt-in.py` reads the topmost `## YYYY-MM-DD[.N]` heading and uses it as the install directory name (`changes/agent/<version>/` in the downstream project). Adding a new heading at the top therefore cuts a new installable release.

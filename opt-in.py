@@ -14,7 +14,7 @@ from pathlib import Path
 
 from rich.console import Console
 
-VERSION = "1.2.0"
+VERSION = "1.3.0"
 
 console = Console()
 
@@ -39,6 +39,30 @@ def git_root() -> Path:
     return Path(result.stdout.strip())
 
 
+def resolve_install_root(repo_root: Path) -> Path:
+    cwd = Path.cwd().resolve()
+    if cwd == repo_root.resolve():
+        return repo_root
+    confirm_subdir_install(repo_root, cwd)
+    return cwd
+
+
+def confirm_subdir_install(repo_root: Path, cwd: Path) -> None:
+    console.print(
+        "You are inside a subdirectory of the repository, not its root:\n"
+        f"  repo root:  [bold]{repo_root}[/bold]\n"
+        f"  this dir:   [bold]{cwd}[/bold]\n"
+    )
+    answer = console.input(
+        "Set up the agent process here, in this subdirectory, rather than at the repo root? [y/N] "
+    )
+    if answer.strip().lower() not in ("y", "yes"):
+        console.print(
+            "[bold]Aborted.[/bold] Re-run from the repository root to install there."
+        )
+        sys.exit(0)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Opt a project in to the agent change process."
@@ -46,10 +70,10 @@ def main():
     parser.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
     parser.parse_args()
 
-    project_root = git_root()
-    console.print(f"Setting up agent process in [bold]{project_root}[/bold]\n")
+    install_root = resolve_install_root(git_root())
+    console.print(f"Setting up agent process in [bold]{install_root}[/bold]\n")
 
-    if AGENT_DIR.resolve() == (project_root / "agent").resolve():
+    if AGENT_DIR.resolve() == (install_root / "agent").resolve():
         console.print(
             "[bold red]Error:[/bold red] refusing to run — source and destination resolve to the same path.\n"
             "This script is its own source of truth; running it here would install the agent files on top of themselves."
@@ -57,26 +81,26 @@ def main():
         sys.exit(1)
 
     version_name = read_latest_version_from_changelog()
-    version_dir = project_root / "changes/agent" / version_name
+    version_dir = install_root / "changes/agent" / version_name
     new_pointer = f"@changes/agent/{version_name}/README.md\n"
 
     copy_framework_files(version_dir)
     copy_asset(CHANGELOG_SRC, version_dir / "CHANGELOG.md")
-    remove_legacy_orphan_changelog(project_root)
+    remove_legacy_orphan_changelog(install_root)
 
-    pointer_outcome = rewrite_claude_md(project_root, new_pointer)
+    pointer_outcome = rewrite_claude_md(install_root, new_pointer)
 
     create_settings(
-        project_root / ".claude" / "settings.local.json",
+        install_root / ".claude" / "settings.local.json",
         excludes=["~/.claude/CLAUDE.md"],
     )
 
-    create_dir(project_root / "changes/open")
-    create_dir(project_root / "changes/archive")
+    create_dir(install_root / "changes/open")
+    create_dir(install_root / "changes/archive")
 
-    update_gitignore(project_root / ".gitignore")
+    update_gitignore(install_root / ".gitignore")
 
-    warn_if_legacy_layout(project_root, pointer_outcome)
+    warn_if_legacy_layout(install_root, pointer_outcome)
 
     console.print(
         f"\n[bold green]Done.[/bold green] Installed as [bold]{version_name}[/bold]."
@@ -114,8 +138,8 @@ def copy_framework_files(version_dir: Path) -> None:
                 copy_asset(f, additional_dest / f.name)
 
 
-def remove_legacy_orphan_changelog(project_root: Path) -> None:
-    orphan = project_root / "changes/agent/CHANGELOG.md"
+def remove_legacy_orphan_changelog(install_root: Path) -> None:
+    orphan = install_root / "changes/agent/CHANGELOG.md"
     if orphan.exists() and orphan.is_file():
         orphan.unlink()
         report("removed", orphan, "legacy orphan — now lives inside each version dir")
@@ -193,8 +217,8 @@ def update_gitignore(path: Path) -> None:
     report("updated", path, f"added: {', '.join(to_add)}")
 
 
-def rewrite_claude_md(project_root: Path, new_pointer: str) -> str:
-    path = project_root / "CLAUDE.md"
+def rewrite_claude_md(install_root: Path, new_pointer: str) -> str:
+    path = install_root / "CLAUDE.md"
     if not path.exists():
         path.write_text(new_pointer)
         report("created", path)
@@ -206,7 +230,7 @@ def rewrite_claude_md(project_root: Path, new_pointer: str) -> str:
     if not POINTER_PATTERN.match(existing.strip() + "\n"):
         report("conflict", path, "exists with non-pointer content — left untouched")
         return "refused_foreign"
-    if has_uncommitted_changes(project_root, path):
+    if has_uncommitted_changes(install_root, path):
         report("conflict", path, "pointer update needed but file has uncommitted changes — left untouched")
         return "refused_modified"
     path.write_text(new_pointer)
@@ -214,10 +238,10 @@ def rewrite_claude_md(project_root: Path, new_pointer: str) -> str:
     return "rewrote"
 
 
-def has_uncommitted_changes(project_root: Path, path: Path) -> bool:
+def has_uncommitted_changes(install_root: Path, path: Path) -> bool:
     result = subprocess.run(
-        ["git", "status", "--porcelain", "--", str(path.relative_to(project_root))],
-        cwd=project_root, capture_output=True, text=True,
+        ["git", "status", "--porcelain", "--", str(path.relative_to(install_root))],
+        cwd=install_root, capture_output=True, text=True,
     )
     status = result.stdout
     if not status:
@@ -225,9 +249,9 @@ def has_uncommitted_changes(project_root: Path, path: Path) -> bool:
     return status[:2] != "??"
 
 
-def warn_if_legacy_layout(project_root: Path, pointer_outcome: str) -> None:
-    legacy_agent_dir = project_root / "agent"
-    legacy_changes_agents = project_root / "changes/agents"
+def warn_if_legacy_layout(install_root: Path, pointer_outcome: str) -> None:
+    legacy_agent_dir = install_root / "agent"
+    legacy_changes_agents = install_root / "changes/agents"
     notes: list[str] = []
 
     if legacy_agent_dir.is_dir() and legacy_agent_dir.resolve() != AGENT_DIR.resolve():
